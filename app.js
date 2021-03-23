@@ -47,24 +47,23 @@ function keydownHandler (ev) {
     alert('You need a number as seconds to start the counter!')
     return
   }
+
   timer = new Timer(ev.target.value)
   progressBar = new ProgressBar(timer.unit)
 
   mount([timer, progressBar])
 
   if (!setIntervalHandler) {
-    setIntervalHandler = setInterval(startTimer, 1000)
+    setIntervalHandler = setInterval(refreshTimer, 1000)
   }
 }
 
-const startTimer = () => {
-  let minutes = timer.timerArray[0]
-  let seconds = timer.timerArray[1]
-  if (seconds > 0) {
-    seconds--
-  } else if (minutes > 0) {
-    minutes--
-    seconds = 59
+const refreshTimer = () => {
+  if (timer.timerArray[1] > 0) {
+    timer.timerArray[1]--
+  } else if (timer.timerArray[0]-- > 0) {
+    timer.timerArray[0]--
+    timer.timerArray[1] = 59
   } else {
     clearInterval(setIntervalHandler)
     setIntervalHandler = null
