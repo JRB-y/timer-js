@@ -1,6 +1,9 @@
-DAY 1
+***DAY 1***
 
-A JS Timer
+A JS Timer made with vanilla javascript.
+
+Features
+    - progress bar
 
 TODO:
 - Add marks
