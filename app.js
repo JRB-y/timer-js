@@ -1,43 +1,43 @@
 /**
- * Day 1:
+ * Day 2:
  * A Simple timer made with html, css and js.
  * 
  * TODO: save marks.
  */
-let countdown = null // input in seconds
-let timerArray = []
+
+/*** Helpers ***/
 let setIntervalHandler = null
-
-const display = document.querySelector('#timer-display') // the span on the HTML
-const progressBar = document.querySelector('#progress-bar')
-
 const pad = (d) => (d < 10) ? '0' + d.toString() : d.toString()
+const mount = (elements) => elements.forEach(el => el.mount())
 
-const mount = () => {
-  display.innerHTML = `${pad(timerArray[0])}:${pad(timerArray[1])}`
-  reduceProgressBar()
-}
-
-const startTimer = () => {
-  if (timerArray[1] > 0) {
-    timerArray[1]--
-  } else if (timerArray[0] > 0) {
-    timerArray[0]--
-    timerArray[1] = 59
-  } else {
-    clearInterval(setIntervalHandler)
-    setIntervalHandler = null
+/*** Elements ***/
+let timer
+function Timer (input) {
+  this.countdown = Number(input)
+  this.unit = Math.ceil(100 / this.countdown)
+  this.timerArray = [
+    Math.floor(this.countdown / 60),  // minutes
+    Math.floor(this.countdown % 60)   //seconds
+  ]
+  this.htmlElement = document.querySelector('#timer-display')
+  this.mount = () => {
+    this.htmlElement.innerHTML = `${pad(this.timerArray[0])}:${pad(this.timerArray[1])}`
   }
-  mount()
 }
 
-const reduceProgressBar = () => {
-  const unit = Math.ceil(100 / countdown)
-  const oldValue = +progressBar.style.width.slice(0, progressBar.style.width.length - 1)
-  const newValue = oldValue - unit < 0 ? 0 : oldValue - unit
-  progressBar.style.width = `${newValue}%`
+let progressBar
+function ProgressBar (unit) {
+  this.htmlElement = document.querySelector('#progress-bar')
+  this.htmlElement.style.width = `${100 + unit}%`
+  this.mount = () => {
+    const width = this.htmlElement.style.width
+    const oldValue = +width.slice(0, width.length - 1)
+    const newValue = oldValue - timer.unit < 0 ? 0 : oldValue - timer.unit
+    this.htmlElement.style.width = `${newValue}%`
+  }
 }
 
+/*** Main functions ***/
 function keydownHandler (ev) {
   if (ev.key !== 'Enter' && ev.keyCode !== 13) return
 
@@ -47,18 +47,27 @@ function keydownHandler (ev) {
     alert('You need a number as seconds to start the counter!')
     return
   }
+  timer = new Timer(ev.target.value)
+  progressBar = new ProgressBar(timer.unit)
 
-  countdown = Number(ev.target.value)
-  timerArray = [Math.floor(countdown / 60), Math.floor(countdown % 60)]
-
-
-  const unit = Math.ceil(100 / countdown)
-  // progressBar.style.width = `${unit * (1 + countdown) }%`
-  progressBar.style.width = `${100 + unit}%`
-  mount()
+  mount([timer, progressBar])
 
   if (!setIntervalHandler) {
     setIntervalHandler = setInterval(startTimer, 1000)
   }
+}
 
+const startTimer = () => {
+  let minutes = timer.timerArray[0]
+  let seconds = timer.timerArray[1]
+  if (seconds > 0) {
+    seconds--
+  } else if (minutes > 0) {
+    minutes--
+    seconds = 59
+  } else {
+    clearInterval(setIntervalHandler)
+    setIntervalHandler = null
+  }
+  mount([timer, progressBar])
 }
