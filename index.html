@@ -5,22 +5,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JS Timer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="./app.css">
 </head>
 <body>
     <nav>
-        <h1>JS Timer</h1>
+        <h1 class="main-title">JS Timer</h1>
     </nav>
+    <div id="controls">
+        <button>
+            <i class="fa fa-play"></i>
+            START
+        </button>
+        <button>
+            <i class="fa fa-stop"></i>
+            STOP
+        </button>
+        <button>
+            <i class="fa fa-flag"></i>
+            MARK
+        </button>
+    </div>
     <main>
         <input
+            class="input-text"
             type="text"
             placeholder="Type in seconds..."
             onkeydown="keydownHandler(event)"
         />
         <div>
+            <div id="progress-bar-wrapper">
+                <div id="progress-bar"></div>
+            </div>
             <span id="timer-display"></span>
-
-            <div id="progress-bar"></div>
         </div>
 
     </main>
