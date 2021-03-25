@@ -8,7 +8,11 @@
 /*** Helpers ***/
 let setIntervalHandler = null
 const pad = (d) => (d < 10) ? '0' + d.toString() : d.toString()
-const mount = (elements) => elements.forEach(el => el.mount())
+const mount = (elements) => {
+  console.log(timer)
+  elements.forEach(el => el.mount())
+
+}
 
 /*** Elements ***/
 let timer
@@ -61,7 +65,7 @@ function keydownHandler (ev) {
 const refreshTimer = () => {
   if (timer.timerArray[1] > 0) {
     timer.timerArray[1]--
-  } else if (timer.timerArray[0]-- > 0) {
+  } else if (timer.timerArray[0] > 0) {
     timer.timerArray[0]--
     timer.timerArray[1] = 59
   } else {
